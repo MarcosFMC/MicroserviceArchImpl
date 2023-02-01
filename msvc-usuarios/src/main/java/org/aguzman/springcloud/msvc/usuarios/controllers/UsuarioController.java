@@ -5,10 +5,12 @@ import org.aguzman.springcloud.msvc.usuarios.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import javax.validation.Valid;
+import java.util.*;
+
 @RequestMapping("api")
 @RestController
 public class UsuarioController {
@@ -16,6 +18,13 @@ public class UsuarioController {
     @Autowired
     private UsuarioService service;
 
+    private static ResponseEntity<Map<String, String>> validar(BindingResult result) {
+        Map<String,String> errores = new HashMap<>();
+        result.getFieldErrors().forEach(e ->{
+            errores.put(e.getField(),"El campo " + e.getField() + " " + e.getDefaultMessage());
+        });
+        return ResponseEntity.badRequest().body(errores);
+    }
     @GetMapping
     public List<Usuario> listar() {
         return service.listar();
@@ -31,15 +40,37 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> crear(@Valid @RequestBody Usuario usuario, BindingResult result) {
+        //Se agregaron las anotaciones @Valid y la clase BindingResult para manejar las validaciones
+
+        if(service.porEmail(usuario.getEmail()).isPresent()){
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("Mensaje","Ya existe un usuario con ese correo electronico"));
+        }
+
+        if(result.hasErrors()){
+            return validar(result);
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED).body(service.guardar(usuario));
     }
 
+
+
     @PutMapping("/{id}")
-    public ResponseEntity<?> editar(@RequestBody Usuario usuario, @PathVariable Long id) {
+    public ResponseEntity<?> editar(@Valid @RequestBody Usuario usuario,BindingResult result, @PathVariable Long id) {
         Optional<Usuario> o = service.porId(id);
+        if(result.hasErrors()){
+            return validar(result);
+        }
         if (o.isPresent()) {
             Usuario usuarioDb = o.get();
+
+            if(!usuario.getEmail().equalsIgnoreCase(usuarioDb.getEmail()) && service.porEmail(usuario.getEmail()).isPresent()){
+                return ResponseEntity.badRequest()
+                        .body(Collections.singletonMap("Mensaje","Ya existe un usuario con ese correo electronico"));
+            }
+
             usuarioDb.setNombre(usuario.getNombre());
             usuarioDb.setEmail(usuario.getEmail());
             usuarioDb.setPassword(usuario.getPassword());
