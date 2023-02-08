@@ -1,6 +1,6 @@
 package org.aguzman.springcloud.msvc.cursos.controllers;
 
-import org.aguzman.springcloud.msvc.cursos.entity.Curso;
+import org.aguzman.springcloud.msvc.cursos.models.entity.Curso;
 import org.aguzman.springcloud.msvc.cursos.services.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
