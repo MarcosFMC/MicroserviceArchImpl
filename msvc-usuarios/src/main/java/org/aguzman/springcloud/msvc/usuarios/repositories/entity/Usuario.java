@@ -1,4 +1,4 @@
-package org.aguzman.springcloud.msvc.usuarios.models.entity;
+package org.aguzman.springcloud.msvc.usuarios.repositories.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;

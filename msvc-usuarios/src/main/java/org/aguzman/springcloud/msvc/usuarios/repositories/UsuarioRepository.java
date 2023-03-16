@@ -1,6 +1,6 @@
 package org.aguzman.springcloud.msvc.usuarios.repositories;
 
-import org.aguzman.springcloud.msvc.usuarios.models.entity.Usuario;
+import org.aguzman.springcloud.msvc.usuarios.repositories.entity.Usuario;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

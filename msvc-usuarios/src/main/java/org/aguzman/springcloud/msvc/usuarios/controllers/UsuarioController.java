@@ -1,6 +1,7 @@
 package org.aguzman.springcloud.msvc.usuarios.controllers;
 
-import org.aguzman.springcloud.msvc.usuarios.models.entity.Usuario;
+import org.aguzman.springcloud.msvc.usuarios.client.CursoClienteRest;
+import org.aguzman.springcloud.msvc.usuarios.repositories.entity.Usuario;
 import org.aguzman.springcloud.msvc.usuarios.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.*;
 
-@RequestMapping("api")
+@RequestMapping("/")
 @RestController
 public class UsuarioController {
 
@@ -87,5 +88,11 @@ public class UsuarioController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+
+    @GetMapping("/usuarios-por-curso")
+    public ResponseEntity<?> obtenerAlumnosPorCurso(@RequestParam List<Long> ids){
+        return ResponseEntity.ok(service.listarPorIds(ids));
     }
 }

@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "cursos_usuarios")
-public class CursoUsuarios {
+public class CursoUsuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +35,10 @@ public class CursoUsuarios {
         if(this == obj){
             return true;
         }
-        if(!(obj instanceof CursoUsuarios)){
+        if(!(obj instanceof CursoUsuario)){
             return false;
         }
-        CursoUsuarios o = (CursoUsuarios) obj;
+        CursoUsuario o = (CursoUsuario) obj;
         return this.usuarioId != null && this.usuarioId.equals(o.usuarioId);
     }
 }

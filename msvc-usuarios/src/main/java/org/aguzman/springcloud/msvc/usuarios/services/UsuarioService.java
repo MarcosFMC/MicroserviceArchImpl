@@ -1,6 +1,6 @@
 package org.aguzman.springcloud.msvc.usuarios.services;
 
-import org.aguzman.springcloud.msvc.usuarios.models.entity.Usuario;
+import org.aguzman.springcloud.msvc.usuarios.repositories.entity.Usuario;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,4 +11,5 @@ public interface UsuarioService {
     Usuario guardar(Usuario usuario);
     void eliminar(Long id);
     Optional<Usuario> porEmail(String email);
+    List<Usuario> listarPorIds(Iterable<Long> ids);
 }
